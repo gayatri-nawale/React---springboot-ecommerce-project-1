@@ -42,27 +42,36 @@ public class ProductController {
             return new ResponseEntity<>(p.getImageData(),HttpStatus.CREATED);
 
         }
-        @PostMapping("/product")
-        public ResponseEntity<?> addproduct(@RequestPart Product product, @RequestPart MultipartFile imageFile){
-            Product p= null;
-            try {
-                p = service.addorUpdateproduct(product,imageFile);
-                return new ResponseEntity<>(p,HttpStatus.CREATED);
-            } catch (IOException e) {
-                return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+    @PostMapping("/product")
+    public ResponseEntity<?> addproduct(
+            @RequestPart("product") Product product,
+            @RequestPart("imageFile") MultipartFile imageFile) {
 
-        @PutMapping("/product/{id}")
-         public ResponseEntity<String> addorUpdateproduct(@RequestPart Product product,@RequestPart MultipartFile imageFile){
-        Product p=null;
-        try{
-            p = service.addorUpdateproduct(product,imageFile);
-            return new ResponseEntity<>("Updated",HttpStatus.CREATED);
+        try {
+            Product savedProduct = service.addorUpdateproduct(product, imageFile);
+            return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+
         } catch (IOException e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    @PutMapping("/product/{id}")
+    public ResponseEntity<?> updateProduct(
+            @PathVariable int id,
+            @RequestPart("product") Product product,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+
+        try {
+            product.setId(id);  // VERY IMPORTANT
+            Product updatedProduct = service.addorUpdateproduct(product, imageFile);
+            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+
+        } catch (IOException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
         @DeleteMapping("/product/{id}")
           public ResponseEntity<String> deleteproduct(@PathVariable int id){

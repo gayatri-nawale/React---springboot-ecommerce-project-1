@@ -16,7 +16,7 @@ public class Product {
     private String name;
     private String description;
     private String brand;
-    private BigDecimal price;
+    private int price;
     private String category;
     private Date releaseDate;
     private boolean isAvailable;
@@ -47,7 +47,7 @@ public class Product {
                 '}';
     }
 
-    public Product(int id, String name, String description, String brand, BigDecimal price, String category, Date releaseDate, boolean isAvailable, int stockQty, String imageName, String imageType, byte[] imageData) {
+    public Product(int id, String name, String description, String brand, int price, String category, Date releaseDate, boolean isAvailable, int stockQty, String imageName, String imageType, byte[] imageData) {
 
         this.id = id;
         this.name = name;
@@ -95,11 +95,11 @@ public class Product {
         this.brand = brand;
     }
 
-    public BigDecimal getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
